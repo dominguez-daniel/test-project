@@ -35,4 +35,4 @@ workflows:
 
   world-workflow:
     jobs:
-      - print-wold
+      - print-world

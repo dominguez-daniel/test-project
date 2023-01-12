@@ -19,9 +19,7 @@ jobs:
       - run:
           name: "Hello"
           command: "echo Hello"
-      - run:
-          name: "Print id"
-          command: "echo $ID"
+      - run: echo $ID 
   print-world:
     docker:
       - image: circleci/node:13.8.0

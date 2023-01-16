@@ -38,7 +38,7 @@ jobs:
   print_greeting:
     executor: my-executor
     steps:
-      - print_greeting: # the command is used as a step without the need to add the 'run' key
+      - print_greeting # the command is used as a step without the need to add the 'run' key
           # greeting: Hello,
           # person_to_greet: Daniel
 

@@ -24,18 +24,18 @@ jobs:
       - checkout
       - run: npm i
       - run: npm run build
-      # - save_cache:
-      #     key: "npm-packages"
-      #     paths:
-      #         - /node_modules
+      - save_cache:
+          key: "npm-packages"
+          paths:
+              - /node_modules
 
   test:
     executor: node-executor
     steps:
       - checkout
-      # - restore_cache:
-      #     keys:
-      #       - "npm-packages"
+      - restore_cache:
+          keys:
+            - "npm-packages"
       - run: npm i
       - run: npm run test
 

@@ -9,18 +9,24 @@ jobs:
   hello:
     executor: my-executor
     steps:
-      - run: echo "Hello, "
+      - run: mkdir -p /tmp/wrk
+      - run: echo "Hello MFs!" > /tmp/wrk/output.txt
+      - persist_to_workspace:
+          root: /tmp/wrk
+          paths:
+            - outuput.txt
   
   world:
     executor: my-executor
     steps:
-      - run: echo "World!"
+      - attach_workspace:
+          at: /tmp/wrk
+      - run: cat /tmp/work/output.txt
 
 workflows:
-  hello_world:
+  persist:
     jobs:
       - hello
       - world:
           requires:
             - hello
-  

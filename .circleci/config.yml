@@ -13,7 +13,7 @@ version: 2.1
 #       - run: echo <<parameters.greeting>> <<parameters.person_to_greet>>
 
 executors:
-  mode:
+  node-executor:
     docker:
       - image: circleci/node:13.8.0
 
@@ -30,7 +30,7 @@ jobs:
       #         - /node_modules
 
   test:
-    executor: node
+    executor: node-executor
     steps:
       - checkout
       # - restore_cache:
@@ -40,7 +40,7 @@ jobs:
       - run: npm run test
 
   analyze:
-    executor: node
+    executor: node-executor
     steps:
       - run: npm run analyze
   

@@ -1,14 +1,14 @@
 version: 2.1
 
 commands:
-  printGreeting:
-    description: Prints greeting
-    default: Hello World!
+  print_greeting:
     parameters:
       greeting:
         type: string
+        default: Hello, 
       name:
         type: string
+        default: World
       steps:
         - run: echo <<parameters.greeting>> <<parameters.name>>
 
@@ -38,7 +38,7 @@ jobs:
   print_greeting:
     executor: my-executor
     steps:
-      - printGreeting:
+      - print_greeting:
           greeting: Hello, 
           name: Daniel
 

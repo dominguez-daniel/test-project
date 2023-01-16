@@ -40,7 +40,7 @@ jobs:
     steps:
       - print_greeting:
           greeting: Hello,
-          name: Daniel
+          person_to_greet: Daniel
 
 
 workflows:

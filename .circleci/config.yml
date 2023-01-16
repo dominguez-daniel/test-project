@@ -42,7 +42,7 @@ jobs:
   analyze:
     executor: node-executor
     steps:
-      - run: npm run analyze
+      - run: npm audit
   
 workflows:
   build_test_analyze:

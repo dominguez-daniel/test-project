@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --config webpack.config.js",
-    "test": "jest",
-    "analyze": "npm audit"
+    "test": "jest"
   },
   "repository": {
     "type": "git",

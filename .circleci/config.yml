@@ -5,12 +5,12 @@ commands:
     parameters:
       greeting:
         type: string
-        default: Hello, 
-      name:
+        default: Hello,
+      person_to_greet:
         type: string
         default: World
     steps:
-      - run: echo <<parameters.greeting>> <<parameters.name>>
+      - run: echo <<parameters.greeting>> <<parameters.person_to_greet>>
 
 executors:
   my-executor:
@@ -39,7 +39,7 @@ jobs:
     executor: my-executor
     steps:
       - print_greeting:
-          greeting: Hello, 
+          greeting: Hello,
           name: Daniel
 
 

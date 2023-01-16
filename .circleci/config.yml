@@ -38,10 +38,9 @@ jobs:
   print_greeting:
     executor: my-executor
     steps:
-      - run: 
-          printGreeting:
-            greeting: Hello, 
-            name: Daniel
+      - printGreeting:
+          greeting: Hello, 
+          name: Daniel
 
 
 workflows:

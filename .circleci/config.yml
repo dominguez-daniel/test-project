@@ -1,54 +1,56 @@
 version: 2.1
 
-commands:
-  print_greeting:
-    parameters:
-      greeting:
-        type: string
-        default: Hello,
-      person_to_greet:
-        type: string
-        default: World
-    steps:
-      - run: echo <<parameters.greeting>> <<parameters.person_to_greet>>
+# commands:
+#   print_greeting:
+#     parameters:
+#       greeting:
+#         type: string
+#         default: Hello,
+#       person_to_greet:
+#         type: string
+#         default: World
+#     steps:
+#       - run: echo <<parameters.greeting>> <<parameters.person_to_greet>>
 
 executors:
-  my-executor:
+  mode:
     docker:
       - image: circleci/node:13.8.0
 
 jobs:
-  hello:
-    executor: my-executor
+  build:
+    executer: node
     steps:
-      - run: mkdir -p /tmp/wrk
-      - run: echo "Hello MFs!" > /tmp/wrk/output.txt
-      - persist_to_workspace:
-          root: /tmp/wrk
-          paths:
-            - output.txt
+      - checkout
+      - run: npm i
+      - run: npm run build
+      # - save_cache:
+      #     key: "npm-packages"
+      #     paths:
+      #         - /node_modules
+
+  test:
+    executor: node
+    steps:
+      - checkout
+      # - restore_cache:
+      #     keys:
+      #       - "npm-packages"
+      - run: npm i
+      - run: npm run test
+
+  analyze:
+    executor: node
+    steps:
+      - run: npm run analyze
   
-  world:
-    executor: my-executor
-    steps:
-      - attach_workspace:
-          at: /tmp/wrk
-      - run: cat /tmp/wrk/output.txt
-
-  print_greeting:
-    executor: my-executor
-    steps:
-      - print_greeting: # the command is used as a step without the need to add the 'run' key
-          greeting: Hello,
-          person_to_greet: Daniel
-
 workflows:
-  persist:
+  build_test_analyze:
     jobs:
-      - hello
-      - world:
+      - build
+      - test:
           requires:
-            - hello
-      - print_greeting:
+            - build
+      - analyze:
           requires:
-            - world
+            - test

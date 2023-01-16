@@ -9,8 +9,8 @@ commands:
       name:
         type: string
         default: World
-      steps:
-        - run: echo <<parameters.greeting>> <<parameters.name>>
+    steps:
+      - run: echo <<parameters.greeting>> <<parameters.name>>
 
 executors:
   my-executor:

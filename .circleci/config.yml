@@ -42,6 +42,7 @@ jobs:
   analyze:
     executor: node-executor
     steps:
+      - checkout
       - run: npm i
       - run: npm run analyze
   

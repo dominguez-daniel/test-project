@@ -1,5 +1,17 @@
 version: 2.1
 
+commands:
+  printGreeting:
+    description: Prints greeting
+    default: Hello World!
+    parameters:
+      greeting:
+        type: string
+      name:
+        type: string
+      steps:
+        - run: echo <<parameters.greeting>> <<parameters.name>>
+
 executors:
   my-executor:
     docker:
@@ -23,6 +35,15 @@ jobs:
           at: /tmp/wrk
       - run: cat /tmp/wrk/output.txt
 
+  print_greeting:
+    executor: my-executor
+    steps:
+      - run: 
+          printGreeting:
+            greeting: Hello, 
+            name: Daniel
+
+
 workflows:
   persist:
     jobs:
@@ -30,3 +51,6 @@ workflows:
       - world:
           requires:
             - hello
+      - print_greeting:
+          requires:
+            - world

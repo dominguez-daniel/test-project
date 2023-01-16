@@ -19,7 +19,7 @@ executors:
 
 jobs:
   build:
-    executer: node-executor
+    executor: node-executor
     steps:
       - checkout
       - run: npm i

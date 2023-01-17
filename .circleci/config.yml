@@ -23,12 +23,13 @@ jobs:
     steps:
       - checkout
       - run: npm i
-      - run: npm run build
-      - run: mkdir -p /tmp/workspace/build
+      - run: mkdir -p /tmp/workspace/artifact
+      - run: touch artifact.js
+      - run: npm run build && cp build/main.bundle.min.js artifact.js
       - persist_to_workspace:
-          root: /tmp/workspace/build
+          root: tmp/workspace/artifact
           paths:
-            - build/*
+            - artifact.js
       - save_cache:
           key: "npm-packages"
           paths:
@@ -51,8 +52,8 @@ jobs:
       - run: npm i
       - run: npm run analyze
       - attach_workspace:
-          at: /tmp/workspace
-      - run: echo /tmp/workspace/build/mainbundle.min.js
+          at: /tmp/workspace/artifact
+      - run: cat /tmp/workspace/artifact/artifact.js
   
 workflows:
   build_test_analyze:

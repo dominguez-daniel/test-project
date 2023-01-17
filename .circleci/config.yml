@@ -27,7 +27,7 @@ jobs:
       - run: touch artifact.js
       - run: npm run build && cp build/main.bundle.min.js artifact.js
       - persist_to_workspace:
-          root: tmp/workspace/artifact
+          root: /tmp/workspace/artifact
           paths:
             - artifact.js
       - save_cache:

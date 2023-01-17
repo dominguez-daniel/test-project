@@ -1,90 +1,77 @@
-# version: 2.1
-
-# # commands:
-# #   print_greeting:
-# #     parameters:
-# #       greeting:
-# #         type: string
-# #         default: Hello,
-# #       person_to_greet:
-# #         type: string
-# #         default: World
-# #     steps:
-# #       - run: echo <<parameters.greeting>> <<parameters.person_to_greet>>
-
-# executors:
-#   node-executor:
-#     docker:
-#       - image: circleci/node:16.10.0
-
-# jobs:
-#   build:
-#     executor: node-executor
-#     steps:
-#       - checkout
-#       - run: npm i
-#       - run: npm run build
-#       - save_cache:
-#           key: "npm-packages"
-#           paths:
-#             - /node_modules
-
-#   test:
-#     executor: node-executor
-#     steps:
-#       - checkout
-#       - restore_cache:
-#           keys:
-#             - "npm-packages"
-#       - run: npm i
-#       - run: npm run test
-
-#   analyze:
-#     executor: node-executor
-#     steps:
-#       - checkout
-#       - run: npm i
-#       - run: npm run analyze
-  
-# workflows:
-#   build_test_analyze:
-#     jobs:
-#       - build
-#       - test:
-#           requires:
-#             - build
-#       - analyze:
-#           requires:
-#             - test
-
 version: 2.1
 
-jobs:
-  hello:
+executors:
+  node-executor:
     docker:
       - image: circleci/node:16.10.0
     working_directory: /tmp
-    steps:
-      - run: mkdir -p workspace
-      - run: echo "Hello mfs!" > workspace/output.txt
-      - persist_to_workspace:
-          root: workspace
-          paths:
-            - output.txt
-  
-  world:
-    docker: 
-      - image: circleci/node:16.10.0
-    steps:
-      - attach_workspace:
-          at: /tmp/workspace
-      - run: cat /tmp/workspace/output.txt
 
+jobs:
+  build:
+    executor: node-executor
+    steps:
+      - checkout
+      - run: npm i
+      - run: npm run build
+      - run: cat build/main.bundle.min.js
+      - save_cache:
+          key: "npm-packages"
+          paths:
+            - /node_modules
+
+  test:
+    executor: node-executor
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - "npm-packages"
+      - run: npm i
+      - run: npm run test
+
+  analyze:
+    executor: node-executor
+    steps:
+      - checkout
+      - run: npm i
+      - run: npm run analyze
+  
 workflows:
-  hello_world:
+  build_test_analyze:
     jobs:
-      - hello
-      - world:
+      - build
+      - test:
           requires:
-            - hello
+            - build
+      - analyze:
+          requires:
+            - test
+
+# version: 2.1
+# jobs:
+#   hello:
+#     docker:
+#       - image: circleci/node:16.10.0
+#     working_directory: /tmp
+#     steps:
+#       - run: mkdir -p workspace
+#       - run: echo "Hello mfs!" > workspace/output.txt
+#       - persist_to_workspace:
+#           root: workspace
+#           paths:
+#             - output.txt
+#   world:
+#     docker: 
+#       - image: circleci/node:16.10.0
+#     steps:
+#       - attach_workspace:
+#           at: /tmp/workspace
+#       - run: cat /tmp/workspace/output.txt
+# workflows:
+#   hello_world:
+#     jobs:
+#       - hello
+#       - world:
+#           requires:
+#             - hello
     

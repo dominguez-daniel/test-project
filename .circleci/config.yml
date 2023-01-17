@@ -40,6 +40,9 @@ jobs:
       - checkout
       - run: npm i
       - run: npm run analyze
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: cat /tmp/workspace/output.js
   
 workflows:
   build_test_analyze:

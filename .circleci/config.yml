@@ -24,10 +24,14 @@ jobs:
       - checkout
       - run: npm i
       - run: npm run build
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths:
+            - build/
       - save_cache:
           key: "npm-packages"
           paths:
-              - /node_modules
+            - /node_modules
 
   test:
     executor: node-executor
@@ -45,6 +49,9 @@ jobs:
       - checkout
       - run: npm i
       - run: npm run analyze
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: echo /tmp/workspace/build/mainbundle.min.js
   
 workflows:
   build_test_analyze:

@@ -1,58 +1,89 @@
+# version: 2.1
+
+# # commands:
+# #   print_greeting:
+# #     parameters:
+# #       greeting:
+# #         type: string
+# #         default: Hello,
+# #       person_to_greet:
+# #         type: string
+# #         default: World
+# #     steps:
+# #       - run: echo <<parameters.greeting>> <<parameters.person_to_greet>>
+
+# executors:
+#   node-executor:
+#     docker:
+#       - image: circleci/node:16.10.0
+
+# jobs:
+#   build:
+#     executor: node-executor
+#     steps:
+#       - checkout
+#       - run: npm i
+#       - run: npm run build
+#       - save_cache:
+#           key: "npm-packages"
+#           paths:
+#             - /node_modules
+
+#   test:
+#     executor: node-executor
+#     steps:
+#       - checkout
+#       - restore_cache:
+#           keys:
+#             - "npm-packages"
+#       - run: npm i
+#       - run: npm run test
+
+#   analyze:
+#     executor: node-executor
+#     steps:
+#       - checkout
+#       - run: npm i
+#       - run: npm run analyze
+  
+# workflows:
+#   build_test_analyze:
+#     jobs:
+#       - build
+#       - test:
+#           requires:
+#             - build
+#       - analyze:
+#           requires:
+#             - test
+
 version: 2.1
 
-# commands:
-#   print_greeting:
-#     parameters:
-#       greeting:
-#         type: string
-#         default: Hello,
-#       person_to_greet:
-#         type: string
-#         default: World
-#     steps:
-#       - run: echo <<parameters.greeting>> <<parameters.person_to_greet>>
-
-executors:
-  node-executor:
+jobs:
+  hello:
     docker:
       - image: circleci/node:16.10.0
-
-jobs:
-  build:
-    executor: node-executor
     steps:
-      - checkout
-      - run: npm i
-      - run: npm run build
-      - save_cache:
-          key: "npm-packages"
+      - run: mkdir -p /tmp/workspace
+      - run: echo "Hello mfs!" > output.txt
+      - persist_to_workspace:
+          root: /tmp/workspace
           paths:
-            - /node_modules
-
-  test:
-    executor: node-executor
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - "npm-packages"
-      - run: npm i
-      - run: npm run test
-
-  analyze:
-    executor: node-executor
-    steps:
-      - checkout
-      - run: npm i
-      - run: npm run analyze
+            - output.txt
   
+  world:
+    docker: 
+      - image: circleci/node:16.10.0
+    steps:
+      - attatch_workspace:
+          at: /tmp/workspace
+      - run: cat /tmp/workspace/output.txt
+
 workflows:
-  build_test_analyze:
+  hello_world:
     jobs:
-      - build
-      - test:
+      - hello
+      - world:
           requires:
-            - build
-      - analyze:
-          requires:
-            - test
+            - hello
+    

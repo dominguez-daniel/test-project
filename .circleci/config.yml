@@ -26,7 +26,7 @@ jobs:
       - run: npm run build
       - run: mkdir -p /tmp/workspace/build
       - persist_to_workspace:
-          root: /tmp/workspace
+          root: /tmp/workspace/build
           paths:
             - build/*
       - save_cache:

@@ -63,11 +63,12 @@ jobs:
   hello:
     docker:
       - image: circleci/node:16.10.0
+    working_directory: /tmp
     steps:
-      - run: mkdir -p /tmp/workspace
-      - run: echo "Hello mfs!" > /tmp/workspace/output.txt
+      - run: mkdir -p workspace
+      - run: echo "Hello mfs!" > workspace/output.txt
       - persist_to_workspace:
-          root: /tmp/workspace
+          root: workspace
           paths:
             - output.txt
   

@@ -12,9 +12,8 @@ jobs:
       - checkout
       - run: npm i
       - run: mkdir -p /tmp/workspace
-      - run: touch /tmp/workspace/output.js
       - run: npm run build
-      - run: cp build/main.bundle.min.js /tmp/workspace/output.js
+      - run: mv build/main.bundle.min.js /tmp/workspace/
       - persist_to_workspace:
           root: /tmp/workspace
           paths:
@@ -42,7 +41,7 @@ jobs:
       - run: npm run analyze
       - attach_workspace:
           at: /tmp/workspace
-      - run: cat /tmp/workspace/output.js
+      - run: cat /tmp/workspace/main.bundle.min.js
   
 workflows:
   build_test_analyze:

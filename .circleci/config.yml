@@ -1,10 +1,8 @@
 version: 2.1
-
 executors:
   node-executor:
     docker:
       - image: circleci/node:16.10.0
-
 jobs:
   build:
     executor: node-executor
@@ -25,7 +23,6 @@ jobs:
             - /node_modules
       - store_artifacts:
           path: /tmp/artifacts/build
-
   test:
     executor: node-executor
     steps:
@@ -35,7 +32,6 @@ jobs:
             - "npm-packages"
       - run: npm i
       - run: npm run test
-
   analyze:
     executor: node-executor
     steps:
@@ -45,7 +41,6 @@ jobs:
       - attach_workspace:
           at: /tmp/workspace
       - run: cat /tmp/workspace/main.bundle.min.js
-  
 workflows:
   build_test_analyze:
     jobs:

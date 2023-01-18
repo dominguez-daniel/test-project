@@ -30,7 +30,7 @@ jobs:
       - run: npm i
       - run: mkdir -p /tmp/workspace /tmp/artifacts/build
       - run: npm run build
-      - run: cp build/* tmp/artifacts/build
+      - run: cp build/* /tmp/artifacts/build
       - run: mv build/main.bundle.min.js /tmp/workspace/
       - persist_to_workspace:
           root: /tmp/workspace

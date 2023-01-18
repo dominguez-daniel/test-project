@@ -6,13 +6,31 @@ executors:
       - image: circleci/node:16.10.0
 
 jobs:
+  # build:
+  #   executor: node-executor
+  #   steps:
+  #     - checkout
+  #     - run: npm i
+  #     - run: mkdir -p /tmp/workspace
+  #     - run: npm run build
+  #     - run: mv build/main.bundle.min.js /tmp/workspace/
+  #     - persist_to_workspace:
+  #         root: /tmp/workspace
+  #         paths:
+  #           - main.bundle.min.js
+  #     - save_cache:
+  #         key: "npm-packages"
+  #         paths:
+  #           - /node_modules
+
   build:
     executor: node-executor
     steps:
       - checkout
       - run: npm i
-      - run: mkdir -p /tmp/workspace
+      - run: mkdir -p /tmp/workspace /tmp/artifacts/build
       - run: npm run build
+      - run: cp build/* tmp/artifacts/build
       - run: mv build/main.bundle.min.js /tmp/workspace/
       - persist_to_workspace:
           root: /tmp/workspace
@@ -22,6 +40,8 @@ jobs:
           key: "npm-packages"
           paths:
             - /node_modules
+      - store_artifacts:
+          path: /tmp/artifacts/build
 
   test:
     executor: node-executor

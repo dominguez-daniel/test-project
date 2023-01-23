@@ -52,6 +52,11 @@ jobs:
           name: Build dynamic inventory file
           command: |
             aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> inventory.txt
+      - run: mv inventory.txt /tmp/workspace/
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths:
+              - inventory.txt
 
   configure_infrastructure:
     docker:
@@ -73,7 +78,7 @@ jobs:
       - run: 
           name: Configure Server
           command: | 
-            ansible-playbook -i inventory.txt main.yml
+            ansible-playbook -i /tmp/workspace/inventory.txt main.yml
 
 workflows:
   pipline_workflow:

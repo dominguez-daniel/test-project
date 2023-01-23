@@ -27,6 +27,6 @@
 - name: "copy index JS"
   become: true
   copy:
-    src: index.js
-    dest: /var/www/html/index.js
+    src: main.bundle.min.js
+    dest: /var/www/html/main.bundle.min.js
     backup: yes

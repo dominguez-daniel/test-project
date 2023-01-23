@@ -1,1 +1,0 @@
-(()=>{"use strict";function o(){for(var o=[],r=0;r<arguments.length;r++)o[r]=arguments[r];return o.reduce((function(o,r){return o+r}),0)}for(var r=0;r<10;r++)console.log("sum=",o(10,r)),console.log("power=",(e=10,n=r,Math.pow(e,n)));var e,n})();

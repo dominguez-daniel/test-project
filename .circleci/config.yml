@@ -52,6 +52,7 @@ jobs:
           name: Build dynamic inventory file
           command: |
             aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> inventory.txt
+      - run: mkdir -p /tmp/workspace/inventory
       - run: mv inventory.txt /tmp/workspace/
       - persist_to_workspace:
           root: /tmp/workspace

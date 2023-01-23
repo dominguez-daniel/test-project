@@ -7,7 +7,7 @@ jobs:
       - image: circleci/node:16.10.0
     steps:
       - checkout
-      - run: mkdir -p /tmp/workspace/buid
+      - run: mkdir -p /tmp/workspace/build
       - run: npm i
       - run: npm run build
       - run: cp build/* /tmp/workspace/build

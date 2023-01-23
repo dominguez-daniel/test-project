@@ -40,7 +40,7 @@ jobs:
           command: |
             aws cloudformation deploy \
               --template-file infra.yaml \
-              --stack-name infraStack-${CIRCLE_WORKFLOW_ID:0:5} \
+              --stack-name infraStack \
               --region us-east-1
       - run:
           name: Build dynamic inventory file

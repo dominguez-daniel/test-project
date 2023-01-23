@@ -1,5 +1,4 @@
 version: 2.1
-
 jobs:
   build:
     docker:
@@ -71,7 +70,7 @@ jobs:
             ansible-playbook -i inventory.txt main.yml
 
 workflows:
-  infra_workflow:
+  pipline_workflow:
     jobs:
       - build
       - test:

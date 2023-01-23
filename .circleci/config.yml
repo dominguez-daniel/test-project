@@ -42,6 +42,10 @@ jobs:
               --template-file infra.yaml \
               --stack-name infraStack-${CIRCLE_WORKFLOW_ID:0:5} \
               --region us-east-1
+      - run:
+          name: Build dynamic inventory file
+          command: |
+            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> inventory.txt
   
   configure_infrastructure:
     docker:
@@ -56,10 +60,6 @@ jobs:
       #     name: Copy build from workspace to files
       #     command: |
       #       cp -R /tmp/workspace/build/* roles/setup/files/
-      - run:
-          name: Build dynamic inventory file
-          command: |
-            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> inventory.txt
       - run:
           name: Install dependencies
           command: |

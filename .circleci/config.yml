@@ -1,23 +1,64 @@
 version: 2.1
 
 jobs:
-  create_infrastructure:
+
+  build:
     docker:
-      - image: cimg/aws:2022.11
+      - image: circleci/node:16.10.0
     steps:
       - checkout
-      - run:
-          name: Create CloudFormation Stack
-          command: |
-            aws cloudformation deploy \
-              --template-file infra.yaml \
-              --stack-name infraStack-${CIRCLE_WORKFLOW_ID:0:5} \
-              --region us-east-1
- 
+      - run: mkdir -p /tmp/workspace/buid
+      - run: npm i
+      - run: npm run build
+      - run: cp build/* /tmp/workspace/build
+      - persist_to_workspace:
+          root: /tmp/workspace
+          path: build
+
+  # test:
+  #   docker:
+  #       - image: circleci/node:16.10.0
+  #     steps:
+  #       - checkout
+  #       - run: npm i
+  #       - run: npm run test
+
+  # create_infrastructure:
+  #   docker:
+  #     - image: cimg/aws:2022.11
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Create CloudFormation Stack
+  #         command: |
+  #           aws cloudformation deploy \
+  #             --template-file infra.yaml \
+  #             --stack-name infraStack-${CIRCLE_WORKFLOW_ID:0:5} \
+  #             --region us-east-1
+  
+  # configure_infrastructure:
+  #   docker:
+  #     - image: python:3.7-alpine3.11
+  #   steps:
+  #     - checkout
+  #     - add_ssh_keys:
+  #         fingerprints: ["22:55:20:93:36:22:44:2c:ba:37:57:bb:32:70:57:e3"]
+  #     - run:
+  #         name: Install dependencies
+  #         command: |
+  #           apk add --update ansible
+  #     - run: 
+  #         name: Configure Server
+  #         command: | 
+  #           ansible-playbook -i inventory.txt main.yml
+
 workflows:
   infra_workflow:
     jobs:
-      - create_infrastructure
+      - build
+
+
+
 
 
 # version: 2.1

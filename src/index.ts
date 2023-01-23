@@ -1,8 +1,10 @@
-import { sum, power } from './math';
+import { sum } from './math';
 
-const base = 10;
+const output = document.getElementById('output');
+const nOutput = document.getElementById('nums');
+const nums = [10, 10];
 
-for (let i = 0; i < 10; i++) {
-  console.log('sum=', sum(base, i));
-  console.log('power=', power(base, i));
-}
+const numsOutput = nums.join(' + ');
+
+nOutput.textContent = numsOutput;
+output.textContent = String(sum(...nums));

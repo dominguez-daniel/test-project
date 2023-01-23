@@ -48,10 +48,10 @@ jobs:
       - image: cimg/aws:2022.11
     steps:
       - checkout
-    - run:
-      name: Build dynamic inventory file
-      command: |
-        aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> inventory.txt
+      - run:
+        name: Build dynamic inventory file
+        command: |
+          aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> inventory.txt
 
   configure_infrastructure:
     docker:

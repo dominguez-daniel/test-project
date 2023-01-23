@@ -13,7 +13,8 @@ jobs:
       - run: cp build/* /tmp/workspace/build
       - persist_to_workspace:
           root: /tmp/workspace
-          path: build
+          paths:
+            - build
 
   # test:
   #   docker:

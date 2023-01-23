@@ -30,34 +30,34 @@ jobs:
       - run: npm i
       - run: npm run analyze
 
-  # create_infrastructure:
-  #   docker:
-  #     - image: cimg/aws:2022.11
-  #   steps:
-  #     - checkout
-  #     - run:
-  #         name: Create CloudFormation Stack
-  #         command: |
-  #           aws cloudformation deploy \
-  #             --template-file infra.yaml \
-  #             --stack-name infraStack \
-  #             --region us-east-1
+  create_infrastructure:
+    docker:
+      - image: cimg/aws:2022.11
+    steps:
+      - checkout
+      - run:
+          name: Create CloudFormation Stack
+          command: |
+            aws cloudformation deploy \
+              --template-file infra.yaml \
+              --stack-name infraStack \
+              --region us-east-1
       
-  # create_host_inventory:
-  #   docker:
-  #     - image: cimg/aws:2022.11
-  #   steps:
-  #     - checkout
-  #     - run:
-  #         name: Build dynamic inventory file
-  #         command: |
-  #           aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> inventory.txt
-  #     - run: mkdir -p /tmp/workspace/inventory
-  #     - run: mv inventory.txt /tmp/workspace/
-  #     - persist_to_workspace:
-  #         root: /tmp/workspace
-  #         paths:
-  #             - inventory.txt
+  create_host_inventory:
+    docker:
+      - image: cimg/aws:2022.11
+    steps:
+      - checkout
+      - run:
+          name: Build dynamic inventory file
+          command: |
+            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> inventory.txt
+      - run: mkdir -p /tmp/workspace/inventory
+      - run: mv inventory.txt /tmp/workspace/
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths:
+              - inventory.txt
 
   configure_infrastructure:
     docker:
@@ -79,7 +79,7 @@ jobs:
       - run: 
           name: Configure Server
           command: | 
-            ansible-playbook -i inventory.txt main.yml
+            ansible-playbook -i /tmp/workspace/inventory.txt main.yml
 
 workflows:
   pipline_workflow:
@@ -91,30 +91,15 @@ workflows:
       - analyze:
           requires: 
             - test
-      - configure_infrastructure:
+      - create_infrastructure:
           requires: 
             - analyze
-
-
-# workflows:
-#   pipline_workflow:
-#     jobs:
-#       - build
-#       - test:
-#           requires: 
-#             - build
-#       - analyze:
-#           requires: 
-#             - test
-#       - create_infrastructure:
-#           requires: 
-#             - analyze
-#       # - create_host_inventory:
-#       #     requires:
-#       #       - create_infrastructure
-#       - configure_infrastructure:
-#           requires: 
-#             - create_infrastructure
+      - create_host_inventory:
+          requires:
+            - create_infrastructure
+      - configure_infrastructure:
+          requires: 
+            - create_infrastructure
 
 
 

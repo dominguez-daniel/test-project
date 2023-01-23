@@ -56,10 +56,10 @@ jobs:
           fingerprints: ["22:55:20:93:36:22:44:2c:ba:37:57:bb:32:70:57:e3"]
       - attach_workspace:
           at: /tmp/workspace
-      # - run:
-      #     name: Copy build from workspace to files
-      #     command: |
-      #       cp -R /tmp/workspace/build/* roles/setup/files/
+      - run:
+          name: Copy build from workspace to files
+          command: |
+            cp -R /tmp/workspace/build/* roles/setup/files/
       - run:
           name: Install dependencies
           command: |

@@ -55,7 +55,7 @@ jobs:
       - run:
           name: Copy build from workspace to files
           command: |
-            cp /tmp/workspace/build/* roles/setup/files
+            cp -R /tmp/workspace/build/* roles/setup/files/
       - run:
           name: Build dynamic inventory file
           command: |

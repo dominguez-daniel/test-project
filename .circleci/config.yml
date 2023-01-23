@@ -16,13 +16,13 @@ jobs:
           paths:
             - build
 
-  # test:
-  #   docker:
-  #       - image: circleci/node:16.10.0
-  #     steps:
-  #       - checkout
-  #       - run: npm i
-  #       - run: npm run test
+  test:
+    docker:
+        - image: circleci/node:16.10.0
+      steps:
+        - checkout
+        - run: npm i
+        - run: npm run test
 
   # create_infrastructure:
   #   docker:
@@ -57,6 +57,7 @@ workflows:
   infra_workflow:
     jobs:
       - build
+      - test
 
 
 

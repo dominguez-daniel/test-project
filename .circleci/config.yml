@@ -81,6 +81,22 @@ jobs:
           command: | 
             ansible-playbook -i /tmp/workspace/inventory.txt main.yml
 
+  smoke_test:
+    docker:
+      - image: alpine:latest
+    steps:
+      - run: apk add --update curl
+      - run:
+          name: Smoke Test
+          command: |
+            URL="https://blog.udacity.com"
+            if curl -s --head ${URL}
+            then
+              return 0
+            else
+              return 1
+            fi
+
 workflows:
   pipline_workflow:
     jobs:
@@ -100,6 +116,9 @@ workflows:
       - configure_infrastructure:
           requires: 
             - create_host_inventory
+      - smoke_test:
+          requires:
+            - configure_infrastructure
 
 
 

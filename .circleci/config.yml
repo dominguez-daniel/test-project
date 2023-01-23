@@ -42,11 +42,17 @@ jobs:
               --template-file infra.yaml \
               --stack-name infraStack \
               --region us-east-1
-      - run:
-          name: Build dynamic inventory file
-          command: |
-            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> inventory.txt
-  
+      
+  create_host_inventory:
+    docker:
+      - image: cimg/aws:2022.11
+    steps:
+      - checkout
+    - run:
+      name: Build dynamic inventory file
+      command: |
+        aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> inventory.txt
+
   configure_infrastructure:
     docker:
       - image: python:3.7-alpine3.11
@@ -82,9 +88,12 @@ workflows:
       - create_infrastructure:
           requires: 
             - analyze
+      - create_host_inventory:
+          requires:
+            - create_infrastructure
       - configure_infrastructure:
           requires: 
-            - create_infrastructure
+            - create_host_inventory
 
 
 

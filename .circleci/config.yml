@@ -1,4 +1,12 @@
 version: 2.1
+commands:
+  destroy_environment:
+    steps:
+      - run:
+          name: Destroy environment
+          command: |
+            aws cloudformation destroy-stack --stack-name infraStack-${CIRCLE_WORKFLOW_ID:0:7}
+            
 jobs:
   build:
     docker:
@@ -40,7 +48,7 @@ jobs:
           command: |
             aws cloudformation deploy \
               --template-file infra.yaml \
-              --stack-name infraStack \
+              --stack-name infraStack-${CIRCLE_WORKFLOW_ID:0:7} \
               --region us-east-1
       
   create_host_inventory:

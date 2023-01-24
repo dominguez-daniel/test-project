@@ -53,8 +53,8 @@ jobs:
               --template-file infra.yaml \
               --stack-name infraStack \
               --region us-east-1
-      - destroy_environment
-        when: on_fail
+      - destroy_environment:
+          when: on_fail
       
   create_host_inventory:
     docker:
@@ -108,8 +108,8 @@ jobs:
             else
               return 1
             fi
-      - destroy_environment
-        when: on_fail
+      - destroy_environment:
+          when: on_fail
 
 workflows:
   pipline_workflow:

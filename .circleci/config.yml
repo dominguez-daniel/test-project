@@ -94,8 +94,9 @@ jobs:
 
   smoke_test:
     docker:
-      - image: cimg/aws:2022.11
+      - image: alpine:latest
     steps:
+      - run: apk add --update curl
       - run:
           name: Smoke Test
           command: |

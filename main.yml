@@ -1,5 +1,5 @@
 --- 
-- name: "Desploy Web App"
+- name: "Deploy Web App"
   hosts: web
   user: ubuntu
 

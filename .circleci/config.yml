@@ -13,17 +13,17 @@ jobs:
       - image: circleci/node:16.10.0
     steps:
       - checkout
-      - run: mkdir -p /tmp/workspace/build /tmp/workspace/artifacts/build-${CIRCLE_WORKFLOW_ID}
+      - run: mkdir -p /tmp/workspace/build /tmp/artifacts/build
       - run: npm i
       - run: npm run build
       - run: cp build/* /tmp/workspace/build
-      - run: cp build/* /tmp/workspace/artifacts/build-${CIRCLE_WORKFLOW_ID}
+      - run: cp build/* /tmp/workspace/artifacts/build
       - persist_to_workspace:
           root: /tmp/workspace
           paths:
             - build
       - store_artifacts:
-          path: /tmp/workspace/artifacts/build-${CIRCLE_WORKFLOW_ID}
+          path: /tmp/artifacts/build
           
   test:
     docker:

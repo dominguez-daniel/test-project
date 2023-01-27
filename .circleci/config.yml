@@ -4,6 +4,7 @@ commands:
     steps:
       - run:
           name: Destroy environment
+          when: on_fail
           command: |
             aws cloudformation destroy-stack --stack-name infraStack
           
@@ -130,61 +131,3 @@ workflows:
       - smoke_test:
           requires:
             - configure_infrastructure
-
-
-
-
-
-# version: 2.1
-# executors:
-#   node-executor:
-#     docker:
-#       - image: circleci/node:16.10.0
-# jobs:
-#   build:
-#     executor: node-executor
-#     steps:
-#       - checkout
-#       - run: npm i
-#       - run: mkdir -p /tmp/workspace /tmp/artifacts/build
-#       - run: npm run build
-#       - run: cp build/* /tmp/artifacts/build
-#       - run: mv build/main.bundle.min.js /tmp/workspace/
-#       - persist_to_workspace:
-#           root: /tmp/workspace
-#           paths:
-#             - main.bundle.min.js
-#       - save_cache:
-#           key: "npm-packages"
-#           paths:
-#             - /node_modules
-#       - store_artifacts:
-#           path: /tmp/artifacts/build
-#   test:
-#     executor: node-executor
-#     steps:
-#       - checkout
-#       - restore_cache:
-#           keys:
-#             - "npm-packages"
-#       - run: npm i
-#       - run: npm run test
-#   analyze:
-#     executor: node-executor
-#     steps:
-#       - checkout
-#       - run: npm i
-#       - run: npm run analyze
-#       - attach_workspace:
-#           at: /tmp/workspace
-#       - run: cat /tmp/workspace/main.bundle.min.js
-# workflows:
-#   build_test_analyze:
-#     jobs:
-#       - build
-#       - test:
-#           requires:
-#             - build
-#       - analyze:
-#           requires:
-#             - test

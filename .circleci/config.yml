@@ -17,8 +17,7 @@ jobs:
       - run: mkdir -p /tmp/workspace/build /tmp/artifacts/build
       - run: npm i
       - run: npm run build
-      - run: cp build/* /tmp/workspace/build
-      - run: cp build/* /tmp/artifacts/build
+      - run: cp build/* /tmp/workspace/build /tmp/artifacts/build
       - persist_to_workspace:
           root: /tmp/workspace
           paths:

@@ -48,6 +48,10 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Request made by user
+          command: |
+            aws sts get-caller-identity
+      - run:
           name: Create CloudFormation Stack
           command: |
             aws cloudformation deploy \
@@ -118,9 +122,10 @@ workflows:
             - build
       - analyze:
           requires: 
-            - test
+            - build
       - create_infrastructure:
           requires: 
+            - test
             - analyze
       - create_host_inventory:
           requires:

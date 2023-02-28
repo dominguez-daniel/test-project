@@ -6,7 +6,7 @@ commands:
           name: Destroy environment
           when: on_fail
           command: |
-            aws cloudformation destroy-stack --stack-name infraStack
+            aws cloudformation delete-stack --stack-name infraStack
           
 jobs:
   build:
@@ -114,7 +114,7 @@ jobs:
             fi
 
 workflows:
-  pipline_workflow:
+  ci:
     jobs:
       - build
       - test:

@@ -68,6 +68,10 @@ jobs:
           name: Build dynamic inventory file
           command: |
             aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> inventory.txt
+      - run: 
+          name: Print inventory
+          command: |
+            cat inventory.txt
       - run: mkdir -p /tmp/workspace/
       - run: mv inventory.txt /tmp/workspace/
       - persist_to_workspace:
@@ -105,8 +109,8 @@ jobs:
       - run:
           name: Smoke Test
           command: |
-            URL="https://blog.udacity.com"
-            if curl -s --head ${URL}
+            export IP=$(cat /tmp/workspace/inventory.txt | sed 1d)
+            if curl -s ${IP} | grep "Math Module"
             then
               return 0
             else
